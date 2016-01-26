@@ -1,0 +1,97 @@
+SRC (surfer.in)
+==========
+
+This keyword allows the user to define the source file from which a surface object will be created. Several different filetypes are currently supported, including STL of Fluent boundary meshes (see below for a complete list). Only triangulated surfaces are supported [^decimate].
+
+[^decimate]: Several filetypes support surface element decimation, where elements with more than 3 vertices are broken into triangular facets.
+
+---
+## Syntax
+
+> SRC *type* *path/filename*
+
+### Parameters
+type
+: Identifier denoting the filetype of the surface being imported. Valid options are:
+>| string | description |
+| -: | :- |
+| `BIN` | Cascade binary surface file. |
+| `RESTART` | Cascade result file (*.les); currently only non-Voronoi result files are supported. |
+|`MSH` | Fluent boundary mesh. Meshes which contain non-triangular elements have these elements decimated into triangular facets. |
+| `STL` | Stereolithography file, both ASCII and binary formatted files are accepted. |
+| `STL_FLIP` | STL file where the surface facet normals are inverted from their direction specified by the vertex ordering. |
+| `STL_GROUP` | Allows for specification of multiple STL files to create a single surface object, e.g., when each boundary zone is in a separate file. Multiple *path/filename* specifications can follow this type declaration. The surface contained in each file is put into a separate surface boundary zone within the surface object. |
+|`STL_GROUP MERGE`| When the optional flag `MERGE` is found after `STL_GROUP` all of the surfaces listed in the subsequent files are placed into a single "merged" boundary zone; similar to file content concatenation. |
+
+path/filename
+: A string which denotes the location of the file to be imported (file name and/or path cannot contain spaces).
+
+### Log Message
+The specific log message displayed depends on the filetype being imported.
+
+Default & Verbose
+> BIN
+> >Surface::readBinary(*filename*)
+>
+> RESTART
+> > Surface::initFromRestart(*filename*)
+>
+> MSH
+> > Surface::initFromMsh(*filename*)
+>
+> STL
+> > Surface::initFromStl(*filename*)
+>
+> STL_GROUP [MERGE]
+> > Surface::initFromStlGroup()
+
+
+---
+## Examples
+
+MSH
+
+	SRC=MSH /home/user/surfaces/case01.msh
+
+The file `case01.msh`, a Fluent boundary mesh, is being used to initialize the surface object. The equals sign after `SRC` is optional; it gets parsed as a "space" during parameter parsing.
+
+STL_GROUP
+
+	SRC STL_GROUP inlet.stl outlet.stl pipe.stl
+
+Three STL files are being imported to create a single surface object. The contents of each file will be contained in the surface object boundary zones "inlet", "outlet", and "pipe", respectively [^suffix].
+
+[^suffix]: The ".stl" suffix is removed when generating the boundary zone name.
+
+STL_GROUP MERGE
+
+	SRC STL_GROUP MERGE inlet.stl outlet.stl pipe.stl
+
+In this case the `MERGE` optional parameter imports the same three files as the previous example and generates the same surface object, in terms of surface facets. The only difference is that a single boundary zone "surface" is created from these three files.
+
+BIN (Stitch.in)
+
+	PART main \
+		SRC=BIN ../surfaces/surf2.sbin \
+		MSH HCP
+
+In this example a mesh part is being defined in the mesh generator Stitch. The part "main" is being initialized with the surface contained in the file `surf2.sbin`, which is a Cascade binary surface file.
+
+---
+## Solver Support
+
+Tet/Hex Codes
+> | adapt | prepro | postpro | charles | cliff | vida | chris | fwh |
+> | :----: | :-----: | :----: | :----: | :-----: |  :-----: |  :-----: |  :-----: |
+> | no | no | no | no | no | no | no | no |
+
+Voronoi Codes
+> | surfer | pointer | stitch | prepro | postpro | vida_vor | charles_vor |
+> | :----: | :-----: | :----: | :----: | :-----: |  :-----: |  :-----: |
+> | yes | no | no | no | no | no | no |
+
+---
+## Similar Commands
+
+Pointer
+: SRC

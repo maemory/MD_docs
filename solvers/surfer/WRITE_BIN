@@ -1,0 +1,68 @@
+WRITE_BIN
+==========
+
+An object is written to a Cascade binary format, the object depends on the particular solver.in file this command appears in. If no *filename* is specified after this keyword a default filename is used.
+
+---
+## Syntax
+
+> WRITE_BIN [*filename*]
+
+### Parameters
+filename
+: filename to which the binary object will be written. If no filename parameter is found then the filename defaults to "surface.bin" (surfer.in) or "points.pbin" (pointer.in).
+
+### Log Message
+Default & Verbose
+> Surfer.exe
+> > Surface::writeBinary(*filename*)
+>
+> Pointer.exe
+>  > WRITE_BIN: *filename*
+
+---
+## Examples
+
+#### Surfer.in
+
+	WRITE_BIN modified-2015.sbin
+
+The main surface is written to the file "modified-2015.sbin".
+
+        WRITE_BIN
+
+The main surface is written to the file "surface.bin".
+
+#### Pointer.in
+
+	WRITE_BIN new_points.sbin
+
+The main point cloud (Voronoi generating points) is written to the file "new_points.sbin".
+
+---
+## Solver Support
+
+Tet/Hex Codes
+> | adapt | prepro | postpro | charles | cliff | vida | chris | fwh |
+> | :----: | :-----: | :----: | :----: | :-----: |  :-----: |  :-----: |  :-----: |
+> | no | no | no | no | no | no | no | no |
+
+Voronoi Codes
+> | surfer | pointer | stitch | prepro | postpro | vida_vor | charles_vor |
+> | :----: | :-----: | :----: | :----: | :-----: |  :-----: |  :-----: |
+> | yes | yes | no | no | no | no | no |
+
+---
+## Similar Commands
+
+Surfer
+: WRITE_TECPLOT
+
+Pointer
+: WRITE_TECPLOT
+
+Stitch
+: WRITE_SURFACE_BIN
+WRITE_POINTS_BIN
+WRITE_SURFACE_TECPLOT
+WRITE_POINTS_TECPLOT

@@ -1,0 +1,63 @@
+ROTATE_Z
+==========
+
+This allows the user to specify an object's rotation about the Z-axis by the angle $\theta$, specified in degrees. The object being translated is determined by the `{keyword}` preceding the command.
+
+---
+## Syntax
+
+> {keyword} ROTATE_Z *theta*
+
+### Parameters
+theta
+: rotation about the Z-axis
+
+
+### Log Message
+Default & Verbose
+> rotateZ()
+>  \> theta: *theta*
+
+---
+## Examples
+
+#### SURFACE
+
+	SURFACE ROTATE_Z 15.0
+
+The keyword `SURFACE` indicates that a surface object will be rotated by 15 degrees counter-clockwise about the Z-axis.
+
+#### COPY
+
+	COPY ROTATE_Z -45
+
+The keyword `COPY` indicates that a copy of the main surface object (surfer.in) or main point cloud (pointer.in) will be rotated by -45 degrees.
+
+---
+## Solver Support
+
+Tet/Hex Codes
+> | adapt | prepro | postpro | charles | cliff | vida | chris | fwh |
+> | :----: | :-----: | :----: | :----: | :-----: |  :-----: |  :-----: |  :-----: |
+> | no | yes | yes | yes | no | no | no | no |
+
+Voronoi Codes
+> | surfer | pointer | stitch | prepro | postpro | vida_vor | charles_vor |
+> | :----: | :-----: | :----: | :----: | :-----: |  :-----: |  :-----: |
+> | yes | yes | yes | yes | no | no | no |
+
+### Valid Keywords
+surfer
+: SURFACE, COPY, NCOPY
+
+pointer
+: POINTS, COPY
+
+prepro
+: TRANSFORM
+
+---
+## Similar Commands
+
+ROTATE_X
+ROTATE_Y
